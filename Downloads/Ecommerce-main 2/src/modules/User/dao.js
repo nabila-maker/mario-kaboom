@@ -7,6 +7,11 @@ const { Model, DataTypes } = pkg;
 class UserDao extends Model {
   static init(sequelize) {
     return super.init({
+      id: {
+        type: DataTypes.UUID,
+        primaryKey:true,
+        defaultValue:DataTypes.UUIDV4 
+      },
       name: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,

@@ -72,7 +72,7 @@ class UserController {
       const token = await this.jwtService.generateToken({ id: user.id });
       const refreshToken = await this.jwtService.generateRefreshToken({ id: user.id });
        res.cookie('auth-cookie', token, { expires: false });
-      res.status(200).json({ user, token, refreshToken });
+      res.status(200).json({ user, token, refreshToken,createdAt:Date.now });
     } catch (err) {
       next(err);
     }

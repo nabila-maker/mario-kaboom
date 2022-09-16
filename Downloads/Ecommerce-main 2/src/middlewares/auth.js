@@ -8,7 +8,9 @@ class AuthMiddleware {
         try {
             // const authHeader = req.headers['authorization'];
             // const token = authHeader && authHeader.split(' ')[1];
+            
             const token = req.headers.authorization.split(" ")[1];
+            // console.log(req.headers.authorization)
             const cookie = req.cookies['auth-cookie'];
 
 
@@ -20,6 +22,11 @@ class AuthMiddleware {
 
             // Verify Token
             const decoded = await this.jwt.decodeToken(token);
+
+            const needRefreshToken = (Date.now - decoded.createdAt) < 60000
+            if(needRefreshToken){
+                
+            }
 
             // if the user has permissions
             req.currentUserId = decoded.id;

@@ -11,11 +11,26 @@ class ReservationService {
     const reservation = await this.reservationRepo.findAll();
     return reservation.map((reservation) => new ReservationEntity(reservation));
   }
-  async getAllByUser(UserId) {
+  // async getAllByUser(UserId) {
     
-    const reservation = await this.reservationRepo.findById(UserId);
-    return reservation.map((reservation) => new ReservationEntity(reservation));
+  //   const reservation = await this.reservationRepo.findById(UserId);
+  //   return reservation.map((reservation) => new ReservationEntity(reservation));
   
+  // }
+
+  async getOne(reservationData) {
+    const reservationEntity = new ReservationEntity(reservationData);
+    const reservation = await this.reservationRepo.findById(reservationEntity);
+    return reservation;
+  }
+
+
+
+  async getAllByUser(reservationData) {
+    const reservationEntity = new ReservationEntity(reservationData);
+    const reservation = await this.reservationRepo.findByUser(reservationEntity);
+    console.log("heyyy",reservation)
+    return reservation;
   }
   
  
@@ -28,11 +43,11 @@ class ReservationService {
 }
 
    
-  async getOne(reservationData) {
-    const reservationEntity = new ReservationEntity(reservationData);
-    const reservation = await this.reservationRepo.findById(reservationEntity);
-    return reservation;
-  }
+  // async getOne(reservationData) {
+  //   const reservationEntity = new ReservationEntity(reservationData);
+  //   const reservation = await this.reservationRepo.findById(reservationEntity);
+  //   return reservation;
+  // }
 
   async update(reservationData) {
     const reservationEntity = new ReservationEntity(reservationData);
@@ -44,9 +59,11 @@ class ReservationService {
   async delete(reservationData) {
     const reservationEntity = new ReservationEntity(reservationData);
     const reservationFound = await this.reservationRepo.findById(reservationEntity);
-    const reservationDeleted = reservationFound.delete(reservationFound);
+    const reservationDeleted = reservationFound.delete(reservationEntity);
     return reservationDeleted;
   }
+
+  
 
 
 }

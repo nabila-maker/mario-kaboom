@@ -7,9 +7,15 @@ const { Model, DataTypes } = pkg;
 class ProductDao extends Model {
   static init(sequelize) {
     return super.init({
+      id: {
+        type: DataTypes.UUID,
+        primaryKey:true,
+        defaultValue:DataTypes.UUIDV4 
+      },
       name: DataTypes.STRING,
       description: DataTypes.STRING,
       price: DataTypes.STRING,
+      images: DataTypes.STRING,
 
     }, { sequelize, modelName: 'Product' });
   }

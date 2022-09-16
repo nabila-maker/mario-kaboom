@@ -1,6 +1,6 @@
-import { ProductDao } from "../Product";
+import { UserDao } from "../User";
 
-class ReservreservationRepository {
+class ReservationRepository {
   constructor(reservationDao) {
     this.reservationDAO =reservationDao;
   }
@@ -13,21 +13,51 @@ class ReservreservationRepository {
     return await this.reservationDAO.create(reservationEntity);
   }
 
-  async findById(UserId) {
-    return await this.reservationDAO.findAll({
+  async findByUser(reservationEntity) {
+    return await this.reservationDAO.findAll({ where: { UserId: reservationEntity.UserId } });
+  }
+
+  async delete(reservationEntity) {
+    return await this.reservationDAO.getOne(reservationEntity);
+  }
+
+  async findById(reservationEntity) {
+    return await this.reservationDAO.findOne({
+      where: { id: reservationEntity.id },
       include: [{
-        model: ProductDao,
+        model: UserDao,
       }],
-      through: {model: 'UserReservation', where : {UserId}},
-      raw: true
     });
   }
 
-  async GetAllByUser(reservationEntity) {
-    return await this.reservationDAO.getAll({ 
-      through: {model: 'UserReservation', where : {UserId}}, });}
+
+
+  // async findById(UserId) {
+  //   return await this.reservationDAO.findAll({
+  //     include: [{
+  //       model: UserDao,
+  //     }],
+  //     through: {model: 'UserReservation', where : {UserId}},
+  //     raw: true
+  //   });
+  // }
+
+  // async findById(reservationEntity) {
+  //   return await this.reservationDAO.findOne({
+  //     where: { id: reservationEntity.id },
+  //     include: [{
+  //       model: UserDao,
+  //     }],
+  //   });
+  // }
+
+ 
+
+  // async GetAllByUser(reservationEntity) {
+  //   return await this.reservationDAO.getAll({ 
+  //     through: {model: 'UserReservation', where : {UserId}}, });}
 
  
 }
 
-export default ReservreservationRepository;
+export default ReservationRepository;

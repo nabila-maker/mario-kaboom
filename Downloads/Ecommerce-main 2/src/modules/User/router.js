@@ -9,7 +9,7 @@ class UserRouter {
 
   initializeRoutes(userController, auth) {
     this.router.route('/user')
-      // .get(userController.login)
+      //  .get(userController.login)
       // .get(userController.getAll)
       .post(userController.register)
       //.patch(userController.update)

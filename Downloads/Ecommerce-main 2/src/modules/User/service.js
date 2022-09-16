@@ -21,7 +21,7 @@ class UserService {
       const userFound = await this.userRepo.findByMail(userEntity);
       console.log(userFound)
    
-    if (userFound) {throw new ApiError(400, "Ressource existante", "Ce User existe déjà");
+    if (userFound) {throw new ApiError(409, "Ressource existante", "Ce User existe déjà");
    
     }else{
        const newUser = await this.userRepo.create(userEntity);
