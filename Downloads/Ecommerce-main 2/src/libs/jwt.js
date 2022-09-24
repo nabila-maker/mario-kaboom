@@ -5,16 +5,16 @@ class JwtService {
   }
 
   decodeToken(token) {
-    return this.jwt.verify(token, this.secret,(error, decodeToken)=>{if(error)console.log(error)});
+    return this.jwt.verify(token, this.secret);
     
   }
 
   async generateRefreshToken(user) {
-    return await this.jwt.sign(user, this.secret, { expiresIn: '1y' });
+    return await this.jwt.sign({...user}, this.secret, { expiresIn: "1y" });
   }
 
   async generateToken(data) {
-    return await this.jwt.sign({...data,createdAt:Date.now}, this.secret, { expiresIn: '1800s' });
+    return await this.jwt.sign({...data}, this.secret, { expiresIn: 1800 });
   }
 
 }

@@ -12,7 +12,7 @@ class UserRouter {
       //  .get(userController.login)
       // .get(userController.getAll)
       .post(userController.register)
-      //.patch(userController.update)
+      .put(userController.update)
       .delete(userController.delete);
      this.router.route('/user/authenticate').post(userController.login);
     

@@ -32,6 +32,15 @@ class UserService {
   
   }
 
+  async getAllByUser(userData) {
+
+    const userEntity = new UserEntity(userData);
+    const user = await this.userRepo.findByUser(userEntity);
+    // console.log("heyyy",reservation)
+    return user;
+  }
+  
+
   async getOne(userData) {
     const userEntity = new UserEntity(userData);
     const user = await this.userRepo.findById(userEntity);

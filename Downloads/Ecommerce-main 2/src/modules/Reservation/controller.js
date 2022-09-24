@@ -1,3 +1,5 @@
+import { ApiError } from "../../helpers/error";
+
 class ReservationController {
     constructor(reservationService) {
       this.reservationService = reservationService;
@@ -14,9 +16,15 @@ class ReservationController {
   
     create = async (req, res, next) => {
       try {
-        const reservationCreate = await this.reservationService.create({ ...req.body });
+        const userId = req.currentUserId;
+        console.log(req.body )
+        const reservationCreate = await this.reservationService.create({ ...req.body,userId });
+        console.log(reservationCreate)
+      if(reservationCreate instanceof ApiError){
+        throw reservationCreate
+      }
         res.status(201).json(reservationCreate);
-        console.log('helloo',reservationCreate)
+   
       } catch (err) {
         next(err);
       }
@@ -35,9 +43,9 @@ class ReservationController {
     // getAllByUser = async (req, res, next) => {
     //   try {
     //     console.log(req.body)
-    //     const { UserId } = req.body;
+    //     const { userId } = req.body;
         
-    //     const service = await this.reservationService.getAllByUser(UserId);
+    //     const service = await this.reservationService.getAllByUser(userId);
     //     res.status(201).json(service);
     //   } catch (err) {
     //     next(err);
@@ -45,9 +53,11 @@ class ReservationController {
 
     getAllByUser = async (req, res, next) => {
       try {
-        const service = await this.reservationService.getAllByUser({ ...req.body });
+
+        const userId = req.currentUserId
+        const service = await this.reservationService.getAllByUser(userId);
+        console.log(service)
         res.status(201).json(service);
-        console.log("heyyy",service)
       } catch (err) {
         next(err);
       }
@@ -59,9 +69,9 @@ class ReservationController {
     findById = async (req, res, next) => {
       try {
         
-        const { UserId } = req.body;
+        const { userId } = req.body;
         
-        const service = await this.reservationService.getAllByUser(UserId);
+        const service = await this.reservationService.getAllByUser(userId);
         res.status(201).json(service);
       } catch (err) {
         next(err);
@@ -69,17 +79,30 @@ class ReservationController {
     
     };
 
-    delete = async (req, res, next) => {
+    update = async (req, res, next) => {
       try {
-        const { id } = req.body;
-        const serviceFound = await this.reservationService.getOne({ id });
-        await serviceFound.destroy();
+        const { reservationId } = req.body;
+        const service = await this.reservationService.update({ reservationId });
+     
   
-        res.status(201).json(serviceFound);
+        res.status(200).json(service);
       } catch (err) {
         next(err);
       }
     };
+
+    delete = async (req, res, next) => {
+      try {
+        const { reservationId } = req.query;
+       const response = await this.reservationService.delete({ reservationId });
+     
+  
+        res.status(204).json(response);
+      } catch (err) {
+        next(err);
+      }
+    };
+
   
   
   }

@@ -9,14 +9,15 @@ class ReservationRouter {
   initializeRoutes(reservationController, auth) {
     this.router.route('/reservation')
   
-    .post(reservationController.create,auth.authenticate)
-    .delete(reservationController.delete,auth.authenticate)
+    .post(auth.authenticate,reservationController.create)
+    
       // .patch(auth.authenticate, reservationController.update)
 
      this.router.route('/reservationAllByUser')
-    .get( auth.authenticate, reservationController.getAllByUser);
-     
-    
+    .get( auth.authenticate, reservationController.getAllByUser)
+    .delete(auth.authenticate,reservationController.delete)
+    .put(auth.authenticate,reservationController.update)
+   
   }
 }
 

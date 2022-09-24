@@ -1,4 +1,5 @@
 import { UserDao } from "../User";
+import { ProductDao } from "../Product";
 
 class ReservationRepository {
   constructor(reservationDao) {
@@ -6,58 +7,48 @@ class ReservationRepository {
   }
 
   async findAll() {
-    return await this.reservationDAO.findAll();
+    return this.reservationDAO.findOne({
+     
+  });
   }
 
   async create(reservationEntity) {
-    return await this.reservationDAO.create(reservationEntity);
-  }
-
-  async findByUser(reservationEntity) {
-    return await this.reservationDAO.findAll({ where: { UserId: reservationEntity.UserId } });
-  }
-
-  async delete(reservationEntity) {
-    return await this.reservationDAO.getOne(reservationEntity);
-  }
-
-  async findById(reservationEntity) {
-    return await this.reservationDAO.findOne({
-      where: { id: reservationEntity.id },
-      include: [{
-        model: UserDao,
-      }],
-    });
+ const exist = await this.reservationDAO.findOne({
+  where:{ userId:reservationEntity.userId,
+          productId:reservationEntity.productId,
+          status:false
+        }
+     });
+     if (exist) { return}
+     else{
+      
+        return this.reservationDAO.create(reservationEntity);
+  
+     }
+    
   }
 
 
+  async delete(id) {
+    return this.reservationDAO.destroy({where:{id}});
+  }
 
-  // async findById(UserId) {
-  //   return await this.reservationDAO.findAll({
-  //     include: [{
-  //       model: UserDao,
-  //     }],
-  //     through: {model: 'UserReservation', where : {UserId}},
-  //     raw: true
-  //   });
-  // }
+  async update(id) {
+    return this.reservationDAO.update({status:true},{where:{id}});
+  }
 
-  // async findById(reservationEntity) {
-  //   return await this.reservationDAO.findOne({
-  //     where: { id: reservationEntity.id },
-  //     include: [{
-  //       model: UserDao,
-  //     }],
-  //   });
-  // }
 
- 
+  async findByReservation(data) {
+    const {userId}= data
+    return this.reservationDAO.findAll({ 
+      where: {userId},  
+      include:{as:"products",model:ProductDao,attributes:{exclude:["id","createdAt","updatedAt"]}}
+  })
 
-  // async GetAllByUser(reservationEntity) {
-  //   return await this.reservationDAO.getAll({ 
-  //     through: {model: 'UserReservation', where : {UserId}}, });}
 
- 
+
+
+}
 }
 
 export default ReservationRepository;

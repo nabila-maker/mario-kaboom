@@ -1,5 +1,7 @@
 /* eslint-disable no-return-await */
 import bcrypt from 'bcrypt';
+import { ProductDao } from '../Product';
+import { ReservationDao } from '../Reservation';
 
 class UserRepository {
   constructor(userDao) {
@@ -17,7 +19,7 @@ class UserRepository {
   }
 
   async findById(userEntity) {
-    return await this.userDAO.findOne({ where: { id: userEntity.id } });
+    return await this.userDAO.findOne({ where: { id: userEntity.id }, include:{as: "reservations",model:ReservationDao, include:{as:"products",model:ProductDao,attributes:{exclude:[productId,createdAt,UpdatedAt]}}}});
   }
 
   async findByMail(userEntity) {

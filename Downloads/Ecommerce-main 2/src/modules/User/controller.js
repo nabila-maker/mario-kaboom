@@ -4,6 +4,17 @@ class UserController {
     this.jwtService = jwtService;
   }
 
+  getAllByUser = async (req, res, next) => {
+    try {
+
+      const userId = req.currentUserId
+      const user = await this.userService.getAllByUser(userId);
+      res.status(201).json(user);
+    } catch (err) {
+      next(err);
+    }
+  };
+
   getAll = async ({ req, res, next }) => {
     try {
       const users = await this.userService.getAll();
@@ -16,7 +27,7 @@ class UserController {
   register = async (req, res, next) => {
     try {
       const user = await this.userService.register({ ...req.body });
-      res.status(201).json(user);
+      res.status(201);
     } catch (err) {
       next(err);
     }
@@ -44,7 +55,9 @@ class UserController {
 
   update = async (req, res, next) => {
     try {
+      console.log(req.body)
       const service = await this.userService.update({ ...req.body });
+
       res.status(201).json(service);
     } catch (err) {
       next(err);
@@ -72,7 +85,7 @@ class UserController {
       const token = await this.jwtService.generateToken({ id: user.id });
       const refreshToken = await this.jwtService.generateRefreshToken({ id: user.id });
        res.cookie('auth-cookie', token, { expires: false });
-      res.status(200).json({ user, token, refreshToken,createdAt:Date.now });
+      res.status(200).json({ user, token, refreshToken,expireDate:Date.now() + 180000 });
     } catch (err) {
       next(err);
     }

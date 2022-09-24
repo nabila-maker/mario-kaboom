@@ -1,12 +1,12 @@
 class ReservationEntity {
     constructor({
-      id, date, UserId,ProductId 
+      reservationId, date, userId, productId,status
     }) {
-      this.id = id;
+      this.reservationId = reservationId;
       this.date = date;
-      this.UserId = UserId;
-      this.ProductId = ProductId;
-   
+      this.userId = userId;
+      this.productId = productId;
+      this.status = status;
     }
 
   }

@@ -17,12 +17,13 @@ class ProductDao extends Model {
       price: DataTypes.STRING,
       images: DataTypes.STRING,
 
-    }, { sequelize, modelName: 'Product' });
+    }, { sequelize, modelName: 'Product'});
   }
 
   static associate(models) {
     // define association here
     // this.belongsTo(models.Service);
+    this.hasMany(models.Reservation,{foreignKey:"productId"} );
     return this;
   }
 }

@@ -17,13 +17,13 @@ class UserDao extends Model {
       password: DataTypes.STRING,
      
 
-    }, { sequelize, modelName: 'User' });
+    }, { sequelize, modelName: 'User'});
   }
 
   static associate(models) {
     // define association here
     // this.belongsTo(models.Service);
-    this.hasMany(models.Reservation);
+    this.hasMany(models.Reservation,{foreignKey:"userId",as:"reservations" }  );
     return this;
   }
 }
